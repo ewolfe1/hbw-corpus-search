@@ -62,6 +62,11 @@ def get_data():
     # state.inventory = df
     state.default_cols = ['Title','Author(s)','Date','BBIPID','All keywords','Summary']
 
+    # update authority references
+    state.authorities = ['Library of Congress ID','WorldCat-OCLC entry']
+    state.inventory_full['Library of Congress ID'] = state.inventory_full['Library of Congress ID'].apply(lambda x: f"https://lccn.loc.gov/{x}" if not pd.isnull(x) else None)
+    state.inventory_full['WorldCat-OCLC entry'] = state.inventory_full['WorldCat-OCLC entry'].str.replace(r'^[^\d]+', '', regex=True).apply(lambda x: f"https://search.worldcat.org/title/{x}" if pd.notnull(x) and x else None)
+
 def about():
     head_cols = st.columns(2)
     with head_cols[0]:
@@ -134,7 +139,7 @@ def display_table():
             fn += f"-{state.search.replace(' ','-')}"
         fn += '.csv'
 
-        csv = convert_df(state.inventory[state.default_cols])
+        csv = convert_df(state.inventory[state.default_cols + state.authorities])
         st.download_button(
             "Download filtered data",
             csv,fn,"text/csv",key='download-csv')
