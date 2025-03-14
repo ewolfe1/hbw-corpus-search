@@ -3,13 +3,14 @@ state = st.session_state
 import pandas as pd
 import os
 import re
+import plotly.express as px
 # import ast
 # from io import BytesIO
 # import matplotlib.pyplot as plt
 # from wordcloud import WordCloud
 # import plotly.graph_objects as go
 # from scipy.stats import norm
-# import numpy as np
+import numpy as np
 from natsort import natsorted
 # import colorlover as cl
 # colorscale = cl.scales['10']['qual']['Paired']
@@ -46,6 +47,8 @@ def get_data():
                 lambda x: '; '.join(x.dropna()), axis=1)
     df['All keywords'] = df['All keywords'].apply(lambda x:
         '; '.join(natsorted(set([t.title().strip().rstrip('.') for t in x.split(';')]))))
+    df['All keywords'] = df['All keywords'].replace(r'^\s*$', np.nan, regex=True)
+
     def get_earliest_date(x):
         dates = {date for date in x if isinstance(date, str) and date.isdigit()}
         return int(min(dates)) if dates else None
@@ -137,7 +140,7 @@ def display_table():
     # with filter_cols[2]:
     #     state.display40 = st.pills('*Texts to display*', ['All titles', '40 books'], default=['All titles'], key='dt', selection_mode='single')
 
-    st.write(f'***{len(state.inventory)} titles displayed***')
+    st.write(f"***{len(state.inventory)} titles displayed*** - ({len(state.inventory[~state.inventory['All keywords'].isnull()])} with keywords, {len(state.inventory[~state.inventory['Summary'].isnull()])} with summaries)")
 
     clicked = st.dataframe(state.inventory[state.default_cols].style.format({'Date': '{:.0f}'}), use_container_width=True, hide_index=True, key="display", selection_mode="single-row", on_select="rerun")
 
