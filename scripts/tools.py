@@ -3,17 +3,8 @@ state = st.session_state
 import pandas as pd
 import os
 import re
-import plotly.express as px
-# import ast
-# from io import BytesIO
-# import matplotlib.pyplot as plt
-# from wordcloud import WordCloud
-# import plotly.graph_objects as go
-# from scipy.stats import norm
 import numpy as np
 from natsort import natsorted
-# import colorlover as cl
-# colorscale = cl.scales['10']['qual']['Paired']
 
 def init():
 
