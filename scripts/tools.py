@@ -56,7 +56,7 @@ def get_data():
     df.rename(columns=col_map, inplace=True)
 
     state.inventory_full = df
-    state.inventory = df
+    # state.inventory = df
     state.default_cols = ['Title','Author(s)','Date','BBIPID','All keywords','Summary']
 
 def about():
@@ -85,7 +85,7 @@ def filter_inv():
     if 'end_date' not in state:
         state.end_date = state.inventory_full['Date'].max()
 
-    state.inventory = state.inventory[(state.inventory['Date']>=state.beg_date) & (state.inventory['Date']<=state.end_date)]
+    t_df = state.inventory_full[(state.inventory_full['Date']>=state.beg_date) & (state.inventory_full['Date']<=state.end_date)  | (state.inventory_full['Date'].isnull())]
 
     # search filter
     if 'search' not in state:
@@ -93,8 +93,10 @@ def filter_inv():
     searchstring = '|'.join(state.search.split())
 
     # Search across all columns
-    state.inventory = state.inventory[state.inventory.apply(
+    t_df = t_df[t_df.apply(
     lambda row: row.astype(str).str.contains(searchstring, na=False, case=False).any(), axis=1)]
+
+    state.inventory = t_df.copy()
 
 # download csv
 @st.cache_data
@@ -119,6 +121,8 @@ def display_table():
     with filter_cols[2]:
         state.search = st.text_input('*Search all fields (not case sensitive, searches all terms)*')
 
+    filter_inv()
+
     with filter_cols[4]:
         fn = f"HBW_{state.beg_date:.0f}-{state.end_date:.0f}"
         if state.search != '':
@@ -132,8 +136,6 @@ def display_table():
     #
     # with filter_cols[2]:
     #     state.display40 = st.pills('*Texts to display*', ['All titles', '40 books'], default=['All titles'], key='dt', selection_mode='single')
-
-    filter_inv()
 
     st.write(f'***{len(state.inventory)} titles displayed***')
 
