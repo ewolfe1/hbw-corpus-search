@@ -134,7 +134,7 @@ def display_table():
             fn += f"-{state.search.replace(' ','-')}"
         fn += '.csv'
 
-        csv = convert_df(state.inventory)
+        csv = convert_df(state.inventory[state.default_cols])
         st.download_button(
             "Download filtered data",
             csv,fn,"text/csv",key='download-csv')
