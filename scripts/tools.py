@@ -96,8 +96,10 @@ def filter_inv():
     searchstring = '|'.join(state.search.split())
 
     # Search across all columns
-    t_df = t_df[t_df.apply(
-    lambda row: row.astype(str).str.contains(searchstring, na=False, case=False).any(), axis=1)]
+    # t_df = t_df[t_df.apply(
+    # lambda row: row.astype(str).str.contains(searchstring, na=False, case=False).any(), axis=1)]
+    mask = t_df.apply(lambda col: col.astype(str).str.contains(searchstring, na=False, case=False))
+    t_df = t_df[mask.any(axis=1)]
 
     state.inventory = t_df.copy()
 
