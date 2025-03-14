@@ -10,7 +10,7 @@ def init():
 
     # set page configuration. Can only be set once per session and must be first st command called
     try:
-        st.set_page_config(page_title='BBIP review', page_icon=':book:', layout='wide',initial_sidebar_state='collapsed')
+        st.set_page_config(page_title='HBW corpus searching', page_icon=':book:', layout='wide',initial_sidebar_state='collapsed')
     except st.errors.StreamlitAPIException as e:
         if "can only be called once per app" in e.__str__():
             return
