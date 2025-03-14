@@ -1,0 +1,39 @@
+.stApp > body {
+    color: #fff;
+    background-color: #4F8BF9;
+}
+
+/*
+button {
+    background: none!important;
+    border: none;
+    padding: 0!important;
+    color: black !important;
+    text-decoration: none;
+    cursor: pointer;
+    border: none !important;
+}
+button:hover {
+    text-decoration: none;
+    color: black !important;
+}
+button:focus {
+    outline: none !important;
+    box-shadow: none !important;
+    color: black !important;
+}
+*/
+
+button[kind="pillsActive"] {
+    background-color: #e4e6fb;
+    color: #4a59e2;
+    border-color: #4a59e2
+}
+
+ul {
+    margin-top: -.5px !important;
+}
+
+button[data-testid="stNumberInputStepUp"] { display: none; }
+button[data-testid="stNumberInputStepDown"] { display: none; }
+div[data-baseweb] { border-radius: 4px; }
